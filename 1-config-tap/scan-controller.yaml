@@ -1,0 +1,21 @@
+# TODO does not work without manual configuration
+# apiVersion: packaging.carvel.dev/v1alpha1
+# kind: PackageInstall
+# metadata:
+#   name: scan-controller
+#   namespace: tap-install
+# spec:
+#   serviceAccountName: cluster-admin-sa
+#   packageRef:
+#     refName: scanning.apps.tanzu.vmware.com
+#     versionSelection:
+#       constraints: 1.0.0-beta
+#       prereleases: {}
+#   values:
+#   - secretRef:
+#       name: scan-controller-values
+# ---
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: scan-link-system

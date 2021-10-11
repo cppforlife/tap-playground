@@ -1,0 +1,33 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: app-live-view
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/change-rule: "upsert after upserting conventions"
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: appliveview.tanzu.vmware.com
+    versionSelection:
+      constraints: 0.2.0
+      prereleases: {}
+  values:
+  - secretRef:
+      name: app-live-view-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-live-view-values
+  namespace: tap-install
+stringData:
+  values.yml: |
+    connector_namespaces: [default]
+    server_namespace: app-live-view
+# TODO why do we need this namespace?
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: app-live-view

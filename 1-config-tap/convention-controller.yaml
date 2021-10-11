@@ -1,0 +1,15 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: convention-controller
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/change-group: conventions
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: controller.conventions.apps.tanzu.vmware.com
+    versionSelection:
+      constraints: 0.4.2
+      prereleases: {}
+  

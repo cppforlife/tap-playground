@@ -1,0 +1,33 @@
+#@ load("@ytt:overlay", "overlay")
+
+#@ sa = overlay.subset({"kind": "ServiceAccount"})
+#@ role = overlay.subset({"kind": "ClusterRole"})
+#@ roleb = overlay.subset({"kind": "ClusterRoleBinding"})
+
+#@overlay/match by=overlay.or_op(sa, role, roleb),expects="1+"
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    kapp.k14s.io/change-group: tap-perms
+
+#@overlay/match by=overlay.subset({"kind": "PackageRepository"})
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    kapp.k14s.io/change-group: tap-repo
+
+#@overlay/match by=overlay.subset({"kind": "PackageInstall"}),expects="1+"
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    kapp.k14s.io/change-rule.0: "upsert after upserting tap-repo"
+    #@overlay/match missing_ok=True
+    kapp.k14s.io/change-rule.1: "upsert after upserting tap-perms"
+    #@overlay/match missing_ok=True
+    kapp.k14s.io/change-rule.2: "delete before deleting tap-perms"

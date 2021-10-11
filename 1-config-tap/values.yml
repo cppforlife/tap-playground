@@ -1,0 +1,10 @@
+#@data/values-schema
+---
+image_registry:
+  server: "registry.tanzu.vmware.com"
+  username: ""
+  password: ""
+rw_app_registry:
+  server_repo: ""
+  username: ""
+  password: ""

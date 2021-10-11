@@ -1,0 +1,32 @@
+#@ load("@ytt:library", "library")
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:template", "template")
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: flux-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: flux-cluster-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: flux-system
+
+#@ def flux_updates():
+#@overlay/match by=overlay.all,expects="1+"
+---
+metadata:
+  #@overlay/match missing_ok=True
+  namespace: flux-system
+#@ end
+
+--- #@ template.replace(overlay.apply(library.get("upstream").eval(), flux_updates()))

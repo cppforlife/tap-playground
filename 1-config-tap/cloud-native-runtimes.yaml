@@ -1,0 +1,25 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: cloud-native-runtimes
+  namespace: tap-install
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: cnrs.tanzu.vmware.com
+    versionSelection:
+      constraints: 1.0.2
+      prereleases: {}
+  values:
+  - secretRef:
+      name: cloud-native-runtimes-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cloud-native-runtimes-values
+  namespace: tap-install
+stringData:
+  values.yaml: |
+    # if deploying on a local cluster such as Kind. Otherwise, you can use the defaults values to install CNR.
+    provider: local

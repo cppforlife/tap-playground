@@ -1,0 +1,12 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: source-controller
+  namespace: tap-install
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: controller.source.apps.tanzu.vmware.com
+    versionSelection:
+      constraints: 0.1.2
+      prereleases: {}

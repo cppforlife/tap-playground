@@ -1,0 +1,12 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: service-bindings
+  namespace: tap-install
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: service-bindings.labs.vmware.com
+    versionSelection:
+      constraints: 0.5.0
+      prereleases: {}

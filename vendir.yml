@@ -1,0 +1,27 @@
+apiVersion: vendir.k14s.io/v1alpha1
+kind: Config
+
+directories:
+- path: 0-config-prereq
+  contents:
+  - path: kapp-controller
+    http:
+      url: https://github.com/vmware-tanzu/carvel-kapp-controller/releases/download/v0.27.0/release.yml
+  - path: secretgen-controller
+    http:
+      url: https://github.com/vmware-tanzu/carvel-secretgen-controller/releases/download/v0.5.0/release.yml
+
+# TODO we should really be installed flux as a package
+- path: 1-config-tap/flux/_ytt_lib/upstream
+  contents:
+  - path: .
+    githubRelease:
+      slug: fluxcd/source-controller
+      tag: v0.15.4
+      disableAutoChecksumValidation: true
+# TODO we should really be installed cert-manager as a package
+- path: 1-config-tap/cert-manager/upstream
+  contents:
+  - path: .
+    http:
+      url: https://github.com/jetstack/cert-manager/releases/download/v1.5.3/cert-manager.yaml

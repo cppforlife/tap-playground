@@ -1,0 +1,14 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: cartographer
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/change-group: cartographer
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: cartographer.tanzu.vmware.com
+    versionSelection:
+      constraints: 0.0.6
+      prereleases: {}

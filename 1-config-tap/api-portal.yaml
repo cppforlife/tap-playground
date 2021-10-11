@@ -1,0 +1,12 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: api-portal
+  namespace: tap-install
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: api-portal.tanzu.vmware.com
+    versionSelection:
+      constraints: 1.0.2
+      prereleases: {}

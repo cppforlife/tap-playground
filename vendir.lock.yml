@@ -1,0 +1,18 @@
+apiVersion: vendir.k14s.io/v1alpha1
+directories:
+- contents:
+  - http: {}
+    path: kapp-controller
+  - http: {}
+    path: secretgen-controller
+  path: 0-config-prereq
+- contents:
+  - githubRelease:
+      url: https://api.github.com/repos/fluxcd/source-controller/releases/47359819
+    path: .
+  path: 1-config-tap/flux/_ytt_lib/upstream
+- contents:
+  - http: {}
+    path: .
+  path: 1-config-tap/cert-manager/upstream
+kind: LockConfig

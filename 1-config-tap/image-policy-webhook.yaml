@@ -1,0 +1,24 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: image-policy-webhook
+  namespace: tap-install
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: image-policy-webhook.signing.run.tanzu.vmware.com
+    versionSelection:
+      constraints: 1.0.0-beta.0
+      prereleases: {}
+  values:
+  - secretRef:
+      name: image-policy-webhook-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: image-policy-webhook-values
+  namespace: tap-install
+stringData:
+  values.yaml: |
+    warn_on_unmatched: true

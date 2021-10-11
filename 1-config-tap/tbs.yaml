@@ -1,0 +1,35 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: tbs
+  namespace: tap-install
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: buildservice.tanzu.vmware.com
+    versionSelection:
+      constraints: 1.3.0
+      prereleases: {}
+  values:
+  - secretRef:
+      name: tbs-values
+
+#@ def tbs_values():
+kp_default_repository: #@ data.values.rw_app_registry.server_repo
+kp_default_repository_username: #@ data.values.rw_app_registry.username
+kp_default_repository_password: #@ data.values.rw_app_registry.password
+tanzunet_username: #@ data.values.image_registry.username
+tanzunet_password: #@ data.values.image_registry.password
+#@ end
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tbs-values
+  namespace: tap-install
+stringData:
+  tbs-values.yaml: #@ yaml.encode(tbs_values())

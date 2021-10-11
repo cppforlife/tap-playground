@@ -1,0 +1,30 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: app-accelerator
+  namespace: tap-install
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: accelerator.apps.tanzu.vmware.com
+    versionSelection:
+      constraints: 0.3.0
+      prereleases: {}
+  values:
+  - secretRef:
+      name: app-accelerator-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-accelerator-values
+  namespace: tap-install
+stringData:
+  values.yaml: |
+    server:
+      # Set the engine.service_type to "NodePort" for local clusters like minikube or kind.
+      service_type: "NodePort"
+      watched_namespace: "default"
+      engine_invocation_url: "http://acc-engine.accelerator-system.svc.cluster.local/invocations"
+    engine:
+      service_type: "ClusterIP"

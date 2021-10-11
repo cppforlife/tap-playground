@@ -1,0 +1,36 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: default-supply-chain
+  namespace: tap-install
+  annotations:
+    kapp.k14s.io/change-rule: "upsert after upserting cartographer"
+spec:
+  serviceAccountName: cluster-admin-sa
+  packageRef:
+    refName: default-supply-chain.tanzu.vmware.com
+    versionSelection:
+      constraints: 0.2.0
+      prereleases: {}
+  values:
+  - secretRef:
+      name: default-supply-chain-values
+
+#@ def values():
+registry:
+  server: #@ data.values.rw_app_registry.server_repo.split("/", 1)[0]
+  repository: #@ data.values.rw_app_registry.server_repo.split("/", 1)[1]
+#@ end
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: default-supply-chain-values
+  namespace: tap-install
+type: Opaque
+stringData:
+  values.yml: #@ yaml.encode(values())
