@@ -12,7 +12,7 @@ directories:
       url: https://github.com/vmware-tanzu/carvel-secretgen-controller/releases/download/v0.5.0/release.yml
 
 # TODO we should really be installed flux as a package
-- path: 1-config-tap/flux/_ytt_lib/upstream
+- path: 1-config-tap/tap-full/flux/_ytt_lib/upstream
   contents:
   - path: .
     githubRelease:
@@ -20,7 +20,7 @@ directories:
       tag: v0.15.4
       disableAutoChecksumValidation: true
 # TODO we should really be installed cert-manager as a package
-- path: 1-config-tap/cert-manager/upstream
+- path: 1-config-tap/tap-full/cert-manager/upstream
   contents:
   - path: .
     http:

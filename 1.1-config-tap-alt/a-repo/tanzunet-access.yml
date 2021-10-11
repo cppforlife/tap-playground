@@ -1,0 +1,22 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:base64", "base64")
+#@ load("@ytt:json", "json")
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: tap-registry
+  namespace: tap-install
+type: kubernetes.io/dockerconfigjson
+data:
+  #@ docker_auth = base64.encode("{}:{}".format(data.values.image_registry.username, data.values.image_registry.password))
+  #@ docker_creds = {"username": data.values.image_registry.username, "password": data.values.image_registry.password, "auth": docker_auth}
+  .dockerconfigjson: #@ base64.encode(json.encode({"auths": {data.values.image_registry.server: docker_creds}}))
+---
+apiVersion: secretgen.carvel.dev/v1alpha1
+kind: SecretExport
+metadata:
+  name: tap-registry
+  namespace: tap-install
+spec:
+  toNamespace: "*"

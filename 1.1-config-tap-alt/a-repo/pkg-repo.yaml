@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tap-install
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageRepository
+metadata:
+  name: tanzu-tap-repository
+  namespace: tap-install
+spec:
+  fetch:
+    imgpkgBundle:
+      image: registry.tanzu.vmware.com/tanzu-application-platform/tap-packages:0.2.0
+# Ideally this Package would be in TAP pkg repo
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: tap-full.tanzu.vmware.com.0.0.1
+  namespace: tap-install
+spec:
+  refName: tap-full.tanzu.vmware.com
+  version: 0.0.1
+  licenses:
+  - Apache 2.0
+  template:
+    spec:
+      fetch:
+      - git:
+          url: https://github.com/cppforlife/tap-playground
+          subPath: 1-config-tap/tap-full/
+      template:
+      - ytt: {}
+      deploy:
+      - kapp: {}
